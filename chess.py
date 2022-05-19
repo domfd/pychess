@@ -5,24 +5,24 @@
 import pygame
 import time
 import random
-import Piece
+import piece
 
 pygame.display.init()
 screen = pygame.display.set_mode((800,600))
 
+whpawnpath = "pieces/white_pawn.png"
 #variables
 done = False
 img = pygame.image.load("board.png")
 group = pygame.sprite.RenderPlain()
-events = pygame.event.get()
-
+sel_piece = None
 x = y = 150
 
 
 
 def drawpieces():
     """draws some pieces"""
-    testpawn = Piece.Pawn((x, y))    
+    testpawn = piece.Piece((x, y), whpawnpath)    
     group.add(testpawn)
     group.draw(screen)
 
@@ -47,16 +47,18 @@ while not done:
     if PressedList[pygame.K_ESCAPE]:
         done = True   
     
-    #check for mouseclick => find selected piece
-    # NOT TESTED
-    for event in events:
-        if event.type == pygame.MOUSEBUTTONUP:
-            pos = pygame.mouse.get_pos()
-            for piece in group:
-                if piece.rect.collidepoint(pos):
-                    sel_piece = piece
-                    
-   
+    #mouse input
+    mousePressed = pygame.mouse.get_pressed()
+    mousePos = pygame.mouse.get_pos()
+    if mousePressed[0]:        
+        if sel_piece == None:            
+            for p in group:
+                if p.rect.collidepoint(mousePos):
+                    sel_piece = p
+        else:
+            sel_piece.rect.center(mousePos)
+            sel_piece = None
+    
     drawboard()
     drawpieces()
     pygame.display.flip()
