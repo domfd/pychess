@@ -7,7 +7,7 @@ class Piece(pygame.sprite.Sprite):
     def __init__(self, pos, path):
         super(Piece, self).__init__()
         self.image = pygame.image.load(path)
-        self.image = pygame.transform.scale(self.image, (50,50))
+        self.image = pygame.transform.scale(self.image, (62,62))
         self.rect = self.image.get_rect()
         self.rect.topleft = pos
         
